@@ -1,0 +1,88 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    container_name: petrobudget-db
+    restart: always
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - petrobudget_net
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: petrobudget-pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    volumes:
+      - ./servers.json:/pgadmin4/servers.json
+      - pgadmin_data:/var/lib/pgadmin  
+    depends_on:
+      - db
+    networks:
+      - petrobudget_net
+
+  backend:
+    build: ./backend
+    container_name: petrobudget-backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      DB_HOST: db
+      DB_PORT: 5432
+      SECRET_KEY: "SHARED_SECRET_KEY_123"
+      ALGORITHM: "HS256"
+    depends_on:
+      - db
+    networks:
+      - petrobudget_net
+
+  tests:
+    build: ./backend
+    container_name: fastapi-tests
+    command: >
+      sh -c "
+      echo '⏳ Waiting for database...' &&
+      until pg_isready -h db -p 5432 -U myuser -d mydb; do sleep 1; done &&
+      echo '✅ Database is ready!' &&
+      PGPASSWORD=mypassword psql -h db -U myuser -d mydb -tc \"SELECT 1 FROM pg_database WHERE datname='mydb_test'\" | grep -q 1 ||
+      PGPASSWORD=mypassword psql -h db -U myuser -d mydb -c 'CREATE DATABASE mydb_test;' &&
+      echo '🧪 Running tests...' &&
+      pytest -v app --disable-warnings --maxfail=1 --cov=app --cov-report=term-missing
+      "
+    environment:
+      POSTGRES_DB: mydb_test
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      DB_HOST: db
+      DB_PORT: 5432
+      PYTHONPATH: /app
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app
+    networks:
+      - petrobudget_net
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+
+networks:
+  petrobudget_net:
+    external: true

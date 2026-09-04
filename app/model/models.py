@@ -13,7 +13,7 @@ class User(Base):
 class Vehicle(Base):
     __tablename__ = "vehicles"
 
-    plateNumber = Column(String, primary_key=True, index=True)
+    plate_number = Column(String, primary_key=True, index=True)
     manufacturer = Column(String, unique=False, index=True, nullable=False)
     model = Column(String, unique=False, index=True, nullable=False)
     engine = Column(String, unique=False, index=True, nullable=False)

@@ -2,7 +2,6 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException
 
 from app.model import models
-from app.dependencies import utils
 from . import schemas
 
 def get_user_by_email(db: Session, email: str):

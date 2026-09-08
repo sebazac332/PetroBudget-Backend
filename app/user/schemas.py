@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from app.competencia.schemas import Competencia
 from typing import Optional
 
 class UserBase(BaseModel):

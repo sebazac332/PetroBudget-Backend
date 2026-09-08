@@ -2,7 +2,6 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException
 
 from app.model import models
-from app.dependencies import utils
 from . import schemas
 
 def get_vehicle_by_plate(db: Session, plate_number: str):

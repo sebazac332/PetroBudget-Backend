@@ -1,9 +1,9 @@
-from sqlalchemy import Table, Column, Integer, Float, String, ForeignKey, Decimal, Date
+from sqlalchemy import Table, Column, Integer, Float, String, ForeignKey, Numeric, Date
 from sqlalchemy.orm import relationship
 from app.database import Base
 
 class User(Base):
-    __tablename__ = "Users"
+    __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=False, index=True, nullable=False)
@@ -19,7 +19,7 @@ class Vehicle(Base):
     engine = Column(String, unique=False, index=True, nullable=False)
     fuel_type = Column(String, unique=False, index=True, nullable=False)
     tank_capacity = Column(Float, unique=False, index=True, nullable=False)
-    avg_fuel_consumption = Column(Decimal(15, 3), unique=False, index=True, nullable=False)
+    avg_fuel_consumption = Column(Numeric(15, 3), unique=False, index=True, nullable=False)
     wheel_number = Column(Integer, unique=False, index=True, nullable=False)
 
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
@@ -40,11 +40,11 @@ class Travel(Base):
     travel_id = Column(Integer, primary_key=True, index=True)
     travel_date = Column(Date, unique=False, index=True, nullable=False)
     total_cost = Column(Float, unique=False, index=True, nullable=False)
-    total_distance = Column(Decimal(15, 3), unique=False, index=True, nullable=False)
+    total_distance = Column(Numeric(15, 3), unique=False, index=True, nullable=False)
 
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
-    vehicle_plate = Column(String, ForeignKey("vehicles.plateNumber"), nullable=False)
+    vehicle_plate = Column(String, ForeignKey("vehicles.plate_number"), nullable=False)
 
     fuel_id = Column(Integer, ForeignKey("fuels.fuel_id"), nullable=False)
 
@@ -53,7 +53,7 @@ class Travelpoint(Base):
 
     point_id = Column(Integer, primary_key=True, index=True)
     point_name = Column(String, unique=False, index=True, nullable=False)
-    distance_from_last_point = Column(Decimal(15, 3), unique=False, index=True, nullable=False)
+    distance_from_last_point = Column(Numeric(15, 3), unique=False, index=True, nullable=False)
 
     last_point_id = Column(Integer, ForeignKey("travelpoints.point_id"), nullable=True)
 

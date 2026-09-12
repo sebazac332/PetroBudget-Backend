@@ -4,7 +4,7 @@ from app.database import get_db
 from . import schemas, functions
 from app.model import models
 
-router = APIRouter(prefix="/travels", tags=["Travels"])
+router = APIRouter(prefix="/travelpoints", tags=["Travelpoints"])
 
 @router.post("/", response_model=schemas.Travelpoint)
 def register_travelpoint(travelpoint: schemas.TravelpointCreate, db: Session = Depends(get_db)):

@@ -1,16 +1,15 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-# Import from database (Todo)
+# Import from database
 
-#from app.database import engine, Base
-#from app.model import models
-#from app.admin.router import router as admin_router
-#from app.user.router import router as user_router
-#from app.empresa.router import router as empresa_router
-#from app.vagas.router import router as vagas_router
-#from app.experiencia.router import router as experiencias_router
-#from app.competencia.router import router as competencias_router
+from app.database import engine, Base
+from app.model import models
+from app.user.router import router as user_router
+from app.vehicle.router import router as vehicle_router
+from app.fuel.router import router as fuel_router
+from app.travel.router import router as travel_router
+from app.travelpoint.router import router as travelpoint_router
 
 app = FastAPI()
 
@@ -24,11 +23,10 @@ def read_root():
 
 Base.metadata.create_all(bind=engine)
 
-# Routers (Todo)
+# Routers
 
-#app.include_router(admin_router)
-#app.include_router(user_router)
-#app.include_router(empresa_router)
-#app.include_router(vagas_router)
-#app.include_router(experiencias_router)
-#app.include_router(competencias_router)
+app.include_router(user_router)
+app.include_router(vehicle_router)
+app.include_router(fuel_router)
+app.include_router(travel_router)
+app.include_router(travelpoint_router)

@@ -11,6 +11,7 @@ class VehicleBase(BaseModel):
     wheel_number: int
 
 class VehicleCreate(VehicleBase):
+    plate_number: str
     user_id: int
 
 class VehicleUpdate(BaseModel):
@@ -23,7 +24,5 @@ class VehicleUpdate(BaseModel):
     wheel_number: Optional[int] = None
 
 class Vehicle(VehicleBase):
-    plate_number: str
-
     class Config:
         from_attributes = True

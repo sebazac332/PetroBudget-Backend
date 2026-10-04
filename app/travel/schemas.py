@@ -17,6 +17,8 @@ class TravelUpdate(BaseModel):
     travel_date: Optional[date] = None
     total_cost: Optional[float] = None
     total_distance: Optional[Decimal] = None
+    vehicle_plate:  Optional[str] = None
+    fuel_id: Optional[int] = None
 
 class Travel(TravelBase):
     travel_id: int

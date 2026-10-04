@@ -36,5 +36,15 @@ def update_fuel(db: Session, fuel_id: int, fuel_update: schemas.FuelUpdate):
     db.refresh(db_fuel)
     return db_fuel
 
+def delete_fuel(db: Session, fuel_id: int):
+    db_fuel = db.query(models.Fuel).filter(models.Fuel.fuel_id == fuel_id).first()
+
+    if not db_fuel:
+        return None
+
+    db.delete(db_fuel)
+    db.commit()
+    return db_fuel
+
 def get_fuels(db: Session):
     return db.query(models.Fuel).all()

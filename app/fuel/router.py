@@ -8,8 +8,6 @@ router = APIRouter(prefix="/fuels", tags=["Fuels"])
 
 @router.post("/", response_model=schemas.Fuel)
 def register_fuel(fuel: schemas.FuelCreate, db: Session = Depends(get_db)):
-    if functions.get_fuel_by_id(db, fuel.fuel_id):
-        raise HTTPException(status_code=400, detail="A fuel with this ID already exists.")
     return functions.create_fuel(db, fuel)
 
 @router.put("/{fuel_id}", response_model=schemas.Fuel)

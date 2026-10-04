@@ -31,8 +31,6 @@ def update_travelpoint(db: Session, point_id: int, travelpoint_update: schemas.T
         db_travelpoint.distance_from_last_point = travelpoint_update.distance_from_last_point
     if travelpoint_update.last_point_id is not None:
         db_travelpoint.last_point_id = travelpoint_update.last_point_id
-    if travelpoint_update.travel_id is not None:
-        db_travelpoint.travel_id = travelpoint_update.travel_id
 
     db.commit()
     db.refresh(db_travelpoint)

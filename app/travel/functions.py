@@ -9,7 +9,6 @@ def get_travel_by_id(db: Session, travel_id: int):
 
 def create_travel(db: Session, travel: schemas.TravelCreate):
     db_travel = models.Travel(
-        travel_id=travel.travel_id,
         travel_date=travel.travel_date,
         total_cost=travel.total_cost,
         total_distance=travel.total_distance,

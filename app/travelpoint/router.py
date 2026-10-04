@@ -8,8 +8,6 @@ router = APIRouter(prefix="/travelpoints", tags=["Travelpoints"])
 
 @router.post("/", response_model=schemas.Travelpoint)
 def register_travelpoint(travelpoint: schemas.TravelpointCreate, db: Session = Depends(get_db)):
-    if functions.get_travelpoint_by_id(db, travelpoint.point_id):
-        raise HTTPException(status_code=400, detail="A travel point with this ID already exists.")
     return functions.create_travelpoint(db, travelpoint)
 
 @router.put("/{point_id}", response_model=schemas.Travelpoint)

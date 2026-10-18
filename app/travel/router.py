@@ -8,6 +8,24 @@ router = APIRouter(prefix="/travels", tags=["Travels"])
 
 @router.post("/", response_model=schemas.Travel)
 def register_travel(travel: schemas.TravelCreate, db: Session = Depends(get_db)):
+    vehicle = db.query(models.Vehicle).filter(models.Vehicle.plate_number == travel.vehicle_plate).first()
+    fuel = db.query(models.Fuel).filter(models.Fuel.fuel_id == travel.fuel_id).first()
+
+    if not vehicle:
+        raise HTTPException(status_code=404, detail="Vehicle not found")
+
+    if vehicle.user_id != travel.user_id:
+        raise HTTPException(status_code=403, detail="The vehicle does not belong to the user")
+    
+    if not fuel:
+        raise HTTPException(status_code=404, detail="Fuel not found")
+
+    if fuel.user_id != travel.user_id:
+        raise HTTPException(status_code=403, detail="The fuel does not belong to the user")
+
+    if fuel.fuel_type != vehicle.fuel_type:
+        raise HTTPException(status_code=400, detail="The fuel type does not match the vehicle's fuel type, the vehicle uses " + vehicle.fuel_type.value)
+
     return functions.create_travel(db, travel)
 
 @router.put("/{travel_id}", response_model=schemas.Travel)

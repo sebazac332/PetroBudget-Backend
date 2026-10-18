@@ -1,11 +1,12 @@
 from pydantic import BaseModel
 from typing import Optional
+from app.model.models import fuelTypeEnum
 
 class VehicleBase(BaseModel):
     manufacturer: str
     model: str
     engine: str
-    fuel_type: str
+    fuel_type: fuelTypeEnum
     tank_capacity: float
     avg_fuel_consumption: float
     wheel_number: int
@@ -18,7 +19,7 @@ class VehicleUpdate(BaseModel):
     manufacturer: Optional[str] = None
     model: Optional[str] = None
     engine: Optional[str] = None
-    fuel_type: Optional[str] = None
+    fuel_type: Optional[fuelTypeEnum] = None
     tank_capacity: Optional[float] = None
     avg_fuel_consumption: Optional[float] = None
     wheel_number: Optional[int] = None

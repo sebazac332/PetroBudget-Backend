@@ -1,6 +1,15 @@
-from sqlalchemy import Table, Column, Integer, Float, String, ForeignKey, Numeric, Date
+import enum
+from sqlalchemy import Table, Column, Integer, Float, String, ForeignKey, Numeric, Date, Enum
 from sqlalchemy.orm import relationship
 from app.database import Base
+
+class fuelTypeEnum(str, enum.Enum):
+    gasoline = "gasoline"
+    diesel = "diesel"
+    biodiesel = "biodiesel"
+    biogasoline = "biogasoline"
+    propane = "propane"
+    gas = "gas"
 
 class User(Base):
     __tablename__ = "users"
@@ -17,7 +26,7 @@ class Vehicle(Base):
     manufacturer = Column(String, unique=False, index=True, nullable=False)
     model = Column(String, unique=False, index=True, nullable=False)
     engine = Column(String, unique=False, index=True, nullable=False)
-    fuel_type = Column(String, unique=False, index=True, nullable=False)
+    fuel_type = Column(Enum(fuelTypeEnum), unique=False, index=True, nullable=False)
     tank_capacity = Column(Float, unique=False, index=True, nullable=False)
     avg_fuel_consumption = Column(Numeric(15, 3), unique=False, index=True, nullable=False)
     wheel_number = Column(Integer, unique=False, index=True, nullable=False)
@@ -28,7 +37,7 @@ class Fuel(Base):
     __tablename__ = "fuels"
 
     fuel_id = Column(Integer, primary_key=True, index=True)
-    fuel_type = Column(String, unique=False, index=True, nullable=False)
+    fuel_type = Column(Enum(fuelTypeEnum), unique=False, index=True, nullable=False)
     price_per_gallon = Column(Float, unique=False, index=True, nullable=False)
     fuel_station = Column(String, unique=True, index=True, nullable=False)
 
